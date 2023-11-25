@@ -14,13 +14,16 @@ const parseUrl = url.parse(req.url,true)
 const path = parseUrl.pathname;
 const trimedPath = path.replace(/^\/+|\/+$/g,'');
 
+// get the HTTP method
+
+const httpMethod = req.method;
+
 //send the response
 res.end('hello world!')
 // log the request path
 console.log('Requested recieved untrimed path ==> ',path)
-
-
 console.log('Requested recieved trimed path ==> ',trimedPath)
+console.log('Requested recieved Method ==> ',httpMethod)
 
 });
 
