@@ -1,7 +1,10 @@
 // dependecies
 
-const http = require('http')
+const http = require('http');
+const { StringDecoder } = require('string_decoder');
 const url = require('url')
+const stringDecoder = require('string_decoder').StringDecoder
+
 // the server should respond to all the request with a string .
 const server = http.createServer(function(req,res){
 
@@ -14,16 +17,41 @@ const parseUrl = url.parse(req.url,true)
 const path = parseUrl.pathname;
 const trimedPath = path.replace(/^\/+|\/+$/g,'');
 
+//Get the query string as an objecy
+const queryString = parseUrl.query
+
 // get the HTTP method
 
 const httpMethod = req.method;
 
+//get the headers
+const headers = req.headers
+
+//Get payload
+const decoder = new StringDecoder('utf-8')
+let buffer ='';
+req.on('data',function(data){
+    buffer+=decoder.write(data);
+})
+
+//gets called everytime
+req.on('end',function(){
+
 //send the response
-res.end('hello world!')
+res.end('Hello world!')
 // log the request path
 console.log('Requested recieved untrimed path ==> ',path)
-console.log('Requested recieved trimed path ==> ',trimedPath)
-console.log('Requested recieved Method ==> ',httpMethod)
+console.log('Trimed path ==> ',trimedPath)
+console.log('Method ==> ',httpMethod)
+console.log('QueryString ==> ',queryString)
+console.log('headers ==> ',headers)
+
+console.log('payload ==> ',buffer)
+
+})
+
+
+
 
 });
 
